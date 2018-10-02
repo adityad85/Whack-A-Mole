@@ -9,7 +9,7 @@ import buttonImage from '../../assets/gameBtn.png';
 
 class Start extends React.Component {
   render() {
-    const { navigation } = this.props;
+    const { navigation, startGame } = this.props;
     return (
       <View style={styles.wrapper}>
         <Text style={styles.headerFont}>Whack the Mole</Text>
@@ -18,6 +18,7 @@ class Start extends React.Component {
           style={styles.buttonWrapper}
           onPress={() => {
             navigation.navigate('GameScreen');
+            startGame();
           }}
         >
           <Image
@@ -33,6 +34,7 @@ class Start extends React.Component {
 
 Start.propTypes = {
   navigation: PropTypes.shape({}).isRequired,
+  startGame: PropTypes.func.isRequired,
 };
 
 export default Start;
