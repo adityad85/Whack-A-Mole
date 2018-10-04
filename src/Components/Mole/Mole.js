@@ -9,6 +9,44 @@ import moleImage from '../../assets/mole.png';
 import styles from './moleStyles';
 
 class Mole extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      molePos: new Animated.Value(1),
+    };
+    this.isMoving = false;
+  }
+
+  componentDidMount() {
+    this.moveMole(this.props.speed, this.props.moleNumber, this.props.moveMoleAt);
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    this.moveMole(this.props.speed, this.props.moleNumber, this.props.moveMoleAt);
+  }
+
+  moveMole(speed, moleNumber, moveMoleAt) {
+    if (moveMoleAt.indexOf(moleNumber) !== -1 && !this.isMoving) {
+      this.isMoving = true;
+      Animated.sequence([
+        Animated.timing(this.state.molePos, {
+          toValue: 0,
+          duration: speed,
+          delay: 0,
+          useNativeDriver: true,
+        }),
+        Animated.timing(this.state.molePos, {
+          toValue: 1,
+          duration: speed,
+          delay: 50,
+          useNativeDriver: true,
+        }),
+      ]).start(() => {
+        this.isMoving = false;
+      });
+    }
+  }
+
   render() {
     const { horizontalPos, verticalPos } = this.props;
     return (
@@ -31,11 +69,27 @@ class Mole extends React.Component {
           style={styles.holeMaskImage}
         />
         <Animated.View
-          style={styles.moleImageWrapper}
+          style={[
+            styles.moleImageWrapper,
+            {
+              transform: [
+                {
+                  translateY: this.state.molePos.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: [0, 120],
+                  }),
+                },
+              ],
+            },
+          ]}
         >
           <TouchableOpacity
             style={styles.moleImageClickable}
-            activeOpacity={0.8}
+            activeOpacity={0.7}
+            onPress={() => {
+              this.state.molePos.setValue(1);
+              // call the total hit action
+            }}
           >
             <Animated.Image
               source={moleImage}

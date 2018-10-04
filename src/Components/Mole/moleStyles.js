@@ -5,7 +5,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     position: 'absolute',
     height: 110,
-    width: 130,
+    width: 150,
+    overflow: 'hidden',
   },
   holeImage: {
     position: 'absolute',
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
     width: 130,
     left: 10,
     bottom: 0,
-    zIndex: 5,
+    zIndex: 10,
   },
   holeMaskImage: {
     position: 'absolute',
@@ -22,23 +23,23 @@ const styles = StyleSheet.create({
     height: 30,
     width: 150,
     bottom: 0,
-    left: 0,
-    zIndex: 100,
+    zIndex: 50,
   },
   moleImageWrapper: {
     position: 'absolute',
     height: 150,
     width: 110,
-    left: 15,
+    left: 20,
     zIndex: 15,
-  },
-  moleImageClickable: {
-    height: 150,
-    width: 110,
+    bottom: -60, // check
   },
   moleImage: {
     position: 'absolute',
     resizeMode: 'cover',
+    height: 150,
+    width: 110,
+  },
+  moleImageClickable: {
     height: 150,
     width: 110,
   },
