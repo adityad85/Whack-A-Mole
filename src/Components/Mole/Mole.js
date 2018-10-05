@@ -85,10 +85,11 @@ class Mole extends React.Component {
         >
           <TouchableOpacity
             style={styles.moleImageClickable}
-            activeOpacity={0.7}
+            activeOpacity={0.5}
             onPress={() => {
               this.state.molePos.setValue(1);
               // call the total hit action
+              this.props.hitMole();
             }}
           >
             <Animated.Image

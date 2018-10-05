@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     width: 110,
     left: 20,
     zIndex: 15,
-    bottom: -60, // check
+    bottom: -60,
   },
   moleImage: {
     position: 'absolute',

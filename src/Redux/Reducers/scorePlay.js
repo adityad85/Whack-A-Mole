@@ -1,4 +1,4 @@
-import { gameActions } from '../gameActions';
+import { gameConstants } from '../../Constants/gameConstants';
 
 const initialState = {
   isStarted: false,
@@ -10,13 +10,13 @@ const initialState = {
 
 export const scorePlay = (state = initialState, action) => {
   switch (action.type) {
-    case gameActions.HIT_MOLE:
+    case gameConstants.HIT_MOLE:
       return {
         ...state,
         score: (state.score + 10),
         totalHits: (state.totalHits + 1),
       };
-    case gameActions.MISS_MOLE:
+    case gameConstants.MISS_MOLE:
       return {
         ...state,
         score: (state.score - 3),

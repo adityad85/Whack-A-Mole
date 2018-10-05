@@ -1,3 +1,3 @@
-import GameScreen from './GameScreen';
+import GameContainer from './GameContainer';
 
-export default GameScreen;
+export default GameContainer;

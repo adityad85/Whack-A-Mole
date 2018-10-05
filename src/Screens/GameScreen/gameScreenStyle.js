@@ -17,6 +17,29 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 165,
   },
+  time: {
+    fontWeight: '500',
+    fontSize: 22,
+    color: '#000',
+    paddingBottom: 5,
+    alignSelf: 'center',
+  },
+  buttonWrapper: {
+    position: 'absolute',
+    top: 20,
+    height: 40,
+    width: 110,
+    borderRadius: 10,
+    justifyContent: 'center',
+  },
+  button: {
+    position: 'absolute',
+    resizeMode: 'stretch',
+    height: 40,
+    width: 110,
+    top: 0,
+    left: 0,
+  }
 });
 
 

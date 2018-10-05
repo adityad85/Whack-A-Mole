@@ -1,4 +1,4 @@
-import { gameActions } from '../gameActions';
+import { gameConstants } from '../../Constants/gameConstants';
 
 const initialState = {
   isStarted: false,
@@ -10,19 +10,19 @@ const initialState = {
 
 export const gameStatus = (state = initialState, action) => {
   switch (action.types) {
-    case gameActions.START_GAME:
+    case gameConstants.START_GAME:
       return {
         ...state,
         isStarted: true,
         isRunning: true,
       };
-    case gameActions.END_GAME:
+    case gameConstants.END_GAME:
       return {
         ...state,
         isRunning: false,
         isEnded: true,
       };
-    case gameActions.RESET_GAME:
+    case gameConstants.RESET_GAME:
       return {
         ...initialState,
       };

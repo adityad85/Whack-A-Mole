@@ -1,12 +1,15 @@
 import React from 'react';
-import { View, Image } from 'react-native';
+import { View, Image, Text } from 'react-native';
 
 import ScoreComponent from '../../Components/ScoreComponent';
 
 import topPanel from '../../assets/game-screen-top.png';
 import { molesConstants } from '../../Constants/moles';
-import Mole from '../../Components/Mole/Mole';
+import Mole from '../../Components/Mole';
 import styles from './gameScreenStyle';
+// import { start } from '../../Redux/Actions/userActions';
+
+import buttonImage from '../../assets/gameBtn.png';
 
 
 class GameScreen extends React.Component {
@@ -14,6 +17,7 @@ class GameScreen extends React.Component {
     super(props);
     this.state = {
       speed: 1000,
+      time: 120,
       moveMoleAt: [
         Math.floor(Math.random() * molesConstants.NO_OF_MOLES) + 1,
       ],
@@ -27,6 +31,7 @@ class GameScreen extends React.Component {
 
   buildMoles() {
     const moles = [];
+    const { speed, moveMoleAt } = this.state;
     let row = 0;
     let moleNumber = 1;
     while (row < molesConstants.ROWS) {
@@ -52,8 +57,8 @@ class GameScreen extends React.Component {
               key={`${moleNumber}${row}`}
               horizontalPos={horizontalPos}
               verticalPos={verticalPos}
-              speed={this.state.speed}
-              moveMoleAt={this.state.moveMoleAt}
+              speed={speed}
+              moveMoleAt={moveMoleAt}
             />,
           );
           i += 1;
@@ -86,10 +91,30 @@ class GameScreen extends React.Component {
     return molesIndexes;
   }
 
+  startClock() {
+    // get from state time current
+    const { time } = this.state;
+    // subtract one using state
+    // if (isgameEnd === true) {
+    // return ;
+    // }
+    if (time === 0) {
+      // end time and end game
+      return;
+    }
+    this.setState(() => ({
+      time: time - 1,
+    }));
+    // check if isRunning or has game ended is true then stop
+    setTimeout(() => this.startClock(), 1000);
+  }
+
   startGame() {
     // start clock
     // send the index to move the next mole
     //
+    this.props.start();
+    this.startClock();
     setInterval(() => {
       this.setState({
         moveMoleAt: this.generateMolesAt(),
@@ -99,6 +124,7 @@ class GameScreen extends React.Component {
 
   render() {
     const moles = this.buildMoles();
+    const { time } = this.state;
     // const showHere = true;
     return (
       <View style={styles.wrapper}>
@@ -108,7 +134,24 @@ class GameScreen extends React.Component {
             source={topPanel}
             style={styles.topPanel}
           />
-          {/* <Text>{this.props.score}</Text> */}
+          <View style={[styles.buttonWrapper, { left: 30 }]}>
+            <Image
+              source={buttonImage}
+              style={styles.button}
+            />
+            <Text style={styles.time}>
+              {this.props.score}
+            </Text>
+          </View>
+          <View style={[styles.buttonWrapper, { right: 30 }]}>
+            <Image
+              source={buttonImage}
+              style={styles.button}
+            />
+            <Text style={styles.time}>
+              {time}
+            </Text>
+          </View>
         </View>
         <View style={styles.game}>
           {moles}

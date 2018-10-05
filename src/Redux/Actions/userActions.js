@@ -1,9 +1,9 @@
-import { gameActions } from '../gameActions';
+import { gameConstants } from '../../Constants/gameConstants';
 
 const start = () => {
   const startGame = () => {
     return {
-      type: gameActions.START_GAME,
+      type: gameConstants.START_GAME,
     };
   };
 
