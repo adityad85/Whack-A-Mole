@@ -7,9 +7,9 @@ import topPanel from '../../assets/game-screen-top.png';
 import { molesConstants } from '../../Constants/moles';
 import Mole from '../../Components/Mole';
 import styles from './gameScreenStyle';
-// import { start } from '../../Redux/Actions/userActions';
 
 import buttonImage from '../../assets/gameBtn.png';
+import Clock from '../../Components/Clock';
 
 
 class GameScreen extends React.Component {
@@ -17,7 +17,7 @@ class GameScreen extends React.Component {
     super(props);
     this.state = {
       speed: 1000,
-      time: 5,
+      time: 120,
       show: false,
       moveMoleAt: [
         Math.floor(Math.random() * molesConstants.NO_OF_MOLES) + 1,
@@ -190,9 +190,10 @@ class GameScreen extends React.Component {
               source={buttonImage}
               style={styles.button}
             />
-            <Text style={styles.time}>
+            {/* <Text style={styles.time}>
               {time}
-            </Text>
+            </Text> */}
+            <Clock time={time} />
           </View>
         </View>
         <View style={styles.game}>
