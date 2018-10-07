@@ -3,7 +3,9 @@ import ScoreComponent from './ScoreComponent';
 
 const mapStateToProps = (state) => {
   return {
-    totalHits: state.gameActions.totalHits,
+    totalHits: state.gameStatus.totalHits,
+    score: state.scorePlay.score,
+    isEnded: state.gameStatus.isEnded,
   };
 };
 

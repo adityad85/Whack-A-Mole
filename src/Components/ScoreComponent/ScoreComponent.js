@@ -12,30 +12,35 @@ import buttonImage from '../../assets/gameBtn.png';
 import styles from './scoreStyle';
 
 class ScoreComponent extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   // this.state = {
-  //   //   showBox: false,
-  //   // };
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      show: false,
+    };
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.isEnded != this.props.isEnded && nextProps.isEnded) {
+      this.setState({ showAlert: true });
+    }
+  }
 
   render() {
-    const { show, totalHits } = this.props;
-    // const { showBox } = this.state;
-    console.log(show);
+    const { totalHits } = this.props;
+    const { show } = this.state;
+    const { openStartScreen, restartGame } = this.props;
+    
     return (
       <Modal
-        transparent
+        transparent={true}
         animationType="slide"
-        visible={show}
+        visible={true}
         onRequestClose={() => ({})}
       >
         <View style={styles.scoreWrapper}>
           <View style={styles.scoreBox}>
-            <Text>
-              {`You Scored$
-              {this.props.score}
-            `}
+            <Text style={styles.scoreFont}>
+              {`You Scored: ${this.props.score}`}
             </Text>
             <Text>
               {`Total Hits: ${totalHits}`}
@@ -43,19 +48,29 @@ class ScoreComponent extends React.Component {
             <View>
               <TouchableOpacity
                 activeOpacity={0.5}
+                style={styles.buttonImage}
+                onPress={() => {
+                  openStartScreen();
+                }}
               >
                 <Image
                   source={buttonImage}
+                  style={styles.buttonImageStyle}
                 />
-                <Text>Home</Text>
+                <Text style={styles.buttonText}>Home</Text>
               </TouchableOpacity>
               <TouchableOpacity
+                style={styles.buttonImage}
                 activeOpacity={0.5}
+                onPress={() => {
+                  restartGame();
+                }}
               >
                 <Image
+                  style={styles.buttonImageStyle}
                   source={buttonImage}
                 />
-                <Text>Restart Game</Text>
+                <Text style={styles.buttonText}>Restart Game</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -66,7 +81,6 @@ class ScoreComponent extends React.Component {
 }
 
 ScoreComponent.propTypes = {
-  show: PropTypes.bool.isRequired,
   totalHits: PropTypes.number.isRequired,
 };
 

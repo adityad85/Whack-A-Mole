@@ -17,16 +17,22 @@ class GameScreen extends React.Component {
     super(props);
     this.state = {
       speed: 1000,
-      time: 120,
+      time: 5,
+      show: false,
       moveMoleAt: [
         Math.floor(Math.random() * molesConstants.NO_OF_MOLES) + 1,
       ],
     };
+    this.openStartScreen = this.openStartScreen.bind(this);
+    this.restartGame = this.restartGame.bind(this);
     this.buildMoles = this.buildMoles.bind(this);
   }
-
+  
   componentDidMount() {
     this.startGame();
+    // already started from the main page
+    // this.props.start();
+    this.startClock();
   }
 
   buildMoles() {
@@ -94,6 +100,7 @@ class GameScreen extends React.Component {
   startClock() {
     // get from state time current
     const { time } = this.state;
+    const { stop } = this.props;
     // subtract one using state
     // if (isgameEnd === true) {
     // return ;
@@ -113,22 +120,52 @@ class GameScreen extends React.Component {
     // start clock
     // send the index to move the next mole
     //
-    this.props.start();
+    const { stop } = this.props;
+    const { time } = this.state;
+    if (time === 0) {
+      this.setState({ show: true });
+      stop();
+      return;
+    }
+    this.setState({
+      moveMoleAt: this.generateMolesAt(),
+    });
+    setTimeout(() => this.startGame(), 1000);
+  }
+
+  openStartScreen() {
+    // const { navigation } = this.state;
+    const { reset } = this.props;
+    reset();
+    this.props.navigation.navigate('StartScreen');
+    this.startGame();
     this.startClock();
-    setInterval(() => {
-      this.setState({
-        moveMoleAt: this.generateMolesAt(),
-      });
-    }, 1000);
+  }
+  
+  restartGame() {
+    const { start, reset } = this.props;
+    reset();
+    this.setState(() => ({ show: false, time: 5 }), () => {
+      start();
+      this.startGame();
+      this.startClock();
+    });
+    // reset();
+    // start();
+    // this.props.start();
+    // this.props.navigation.navigate('GameScreen');
   }
 
   render() {
     const moles = this.buildMoles();
     const { time } = this.state;
-    // const showHere = true;
+    const { isEnded } = this.props;
     return (
       <View style={styles.wrapper}>
-        {/* <ScoreComponent show={showHere} /> */}
+        {this.state.show && <ScoreComponent  
+          openStartScreen={this.openStartScreen}
+          restartGame={this.restartGame}
+        />}
         <View style={{ height: 200 }}>
           <Image
             source={topPanel}
@@ -141,6 +178,11 @@ class GameScreen extends React.Component {
             />
             <Text style={styles.time}>
               {this.props.score}
+            </Text>
+          </View>
+          <View>
+            <Text style={[styles.time, { top: 20 }]}>
+            {this.props.totalHits}
             </Text>
           </View>
           <View style={[styles.buttonWrapper, { right: 30 }]}>

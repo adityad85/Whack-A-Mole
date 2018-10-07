@@ -21,6 +21,10 @@ export const scorePlay = (state = initialState, action) => {
         ...state,
         score: (state.score - 3),
       };
+    case gameConstants.RESET_GAME:
+      return {
+        ...initialState,
+      };
     default:
       return state;
   }

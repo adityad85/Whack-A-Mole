@@ -9,22 +9,20 @@ const initialState = {
 };
 
 export const gameStatus = (state = initialState, action) => {
-  switch (action.types) {
+  switch (action.type) {
     case gameConstants.START_GAME:
       return {
         ...state,
         isStarted: true,
         isRunning: true,
+        isEnded: false,
       };
-    case gameConstants.END_GAME:
+    case gameConstants.STOP_GAME:
       return {
         ...state,
+        isStarted: false,
         isRunning: false,
         isEnded: true,
-      };
-    case gameConstants.RESET_GAME:
-      return {
-        ...initialState,
       };
     default:
       return state;

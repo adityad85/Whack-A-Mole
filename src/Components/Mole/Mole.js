@@ -18,31 +18,42 @@ class Mole extends React.Component {
   }
 
   componentDidMount() {
-    this.moveMole(this.props.speed, this.props.moleNumber, this.props.moveMoleAt);
+    const { speed, moleNumber, moveMoleAt } = this.props;
+    this.moveMole(speed, moleNumber, moveMoleAt);
   }
   
-  componentWillReceiveProps(nextProps) {
-    this.moveMole(this.props.speed, this.props.moleNumber, this.props.moveMoleAt);
+  componentWillReceiveProps() {
+    const { speed, moleNumber, moveMoleAt } = this.props;
+    this.moveMole(speed, moleNumber, moveMoleAt);
+    if (this.props.isEnded) {
+      this.state.molePos.setValue(1);
+      this.state.molePos.stopAnimation();
+    }
   }
 
   moveMole(speed, moleNumber, moveMoleAt) {
+    const { missMole } = this.props;
+    const { molePos } = this.state;
     if (moveMoleAt.indexOf(moleNumber) !== -1 && !this.isMoving) {
       this.isMoving = true;
       Animated.sequence([
-        Animated.timing(this.state.molePos, {
+        Animated.timing(molePos, {
           toValue: 0,
           duration: speed,
           delay: 0,
           useNativeDriver: true,
         }),
-        Animated.timing(this.state.molePos, {
+        Animated.timing(molePos, {
           toValue: 1,
           duration: speed,
           delay: 50,
           useNativeDriver: true,
         }),
-      ]).start(() => {
+      ]).start((isEvent) => {
         this.isMoving = false;
+        if (isEvent.finished && !this.props.isEnded) {
+          missMole();
+        }
       });
     }
   }

@@ -1,3 +1,3 @@
-import ScoreComponent from './ScoreContainer';
+import ScoreContainer from './ScoreContainer';
 
-export default ScoreComponent;
+export default ScoreContainer;
