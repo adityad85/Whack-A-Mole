@@ -19,7 +19,7 @@ class GameScreen extends React.Component {
     super(props);
     this.state = {
       speed: 1000,
-      time: 5,
+      time: 120,
       moveMoleAt: [
         Math.floor(Math.random() * molesConstants.NO_OF_MOLES) + 1,
       ],
