@@ -10,7 +10,9 @@ Linux:
 ```sh
 npm install or yarn
 ```
-Thought Process:
+Link of the [apk](https://drive.google.com/file/d/1DZnV4Zvws3qMcbJ2uHrOyS5pBMaRpPCs/view?usp=sharing)
+
+## Thought Process:
 1. Decided to create the start Screen.
 2. As soon as the start game button is pressed the game will be started and the screen must be navigated to the game screen. using the store the state will be updated.
 3. The time starts as soon as the component gets mounted.
