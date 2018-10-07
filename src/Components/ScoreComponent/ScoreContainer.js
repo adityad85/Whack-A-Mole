@@ -5,7 +5,6 @@ const mapStateToProps = (state) => {
   return {
     totalHits: state.gameStatus.totalHits,
     score: state.scorePlay.score,
-    isEnded: state.gameStatus.isEnded,
   };
 };
 

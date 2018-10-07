@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Image, Text } from 'react-native';
+import PropTypes from 'prop-types';
 
 import ScoreComponent from '../../Components/ScoreComponent';
 
@@ -10,6 +11,7 @@ import styles from './gameScreenStyle';
 
 import buttonImage from '../../assets/gameBtn.png';
 import Clock from '../../Components/Clock';
+import { generateMolesAt } from '../../Helpers/moles';
 
 
 class GameScreen extends React.Component {
@@ -17,8 +19,7 @@ class GameScreen extends React.Component {
     super(props);
     this.state = {
       speed: 1000,
-      time: 120,
-      show: false,
+      time: 5,
       moveMoleAt: [
         Math.floor(Math.random() * molesConstants.NO_OF_MOLES) + 1,
       ],
@@ -27,11 +28,9 @@ class GameScreen extends React.Component {
     this.restartGame = this.restartGame.bind(this);
     this.buildMoles = this.buildMoles.bind(this);
   }
-  
+
   componentDidMount() {
     this.startGame();
-    // already started from the main page
-    // this.props.start();
     this.startClock();
   }
 
@@ -42,7 +41,6 @@ class GameScreen extends React.Component {
     let moleNumber = 1;
     while (row < molesConstants.ROWS) {
       if (row % 2 === 0) {
-        // even for two moles
         let i = 0;
         while (i < 2) {
           let horizontalPos;
@@ -77,8 +75,8 @@ class GameScreen extends React.Component {
             key={`${moleNumber}${row}`}
             horizontalPos={molesConstants.CENTER_MOLE_POSITION}
             verticalPos={row * molesConstants.ROW_HEIGHT}
-            speed={this.state.speed}
-            moveMoleAt={this.state.moveMoleAt}
+            speed={speed}
+            moveMoleAt={moveMoleAt}
           />,
         );
         moleNumber += 1;
@@ -88,60 +86,39 @@ class GameScreen extends React.Component {
     return moles;
   }
 
-  generateMolesAt() {
-    const molesIndexes = [];
-    const moleNumber = Math.round(Math.random() * 2 + 1);
-    for (let i = 0; i < moleNumber; i += 1) {
-      molesIndexes[i] = Math.floor(Math.random() * molesConstants.NO_OF_MOLES + 1);
-    }
-    return molesIndexes;
-  }
-
   startClock() {
-    // get from state time current
     const { time } = this.state;
-    const { stop } = this.props;
-    // subtract one using state
-    // if (isgameEnd === true) {
-    // return ;
-    // }
     if (time === 0) {
-      // end time and end game
       return;
     }
     this.setState(() => ({
       time: time - 1,
     }));
-    // check if isRunning or has game ended is true then stop
     setTimeout(() => this.startClock(), 1000);
   }
 
   startGame() {
-    // start clock
-    // send the index to move the next mole
-    //
     const { stop } = this.props;
     const { time } = this.state;
     if (time === 0) {
-      this.setState({ show: true });
       stop();
       return;
     }
     this.setState({
-      moveMoleAt: this.generateMolesAt(),
+      moveMoleAt: generateMolesAt(),
     });
     setTimeout(() => this.startGame(), 1000);
   }
 
   openStartScreen() {
-    // const { navigation } = this.state;
+    const { navigation } = this.props;
     const { reset } = this.props;
     reset();
-    this.props.navigation.navigate('StartScreen');
+    navigation.navigate('StartScreen');
     this.startGame();
     this.startClock();
   }
-  
+
   restartGame() {
     const { start, reset } = this.props;
     reset();
@@ -150,22 +127,20 @@ class GameScreen extends React.Component {
       this.startGame();
       this.startClock();
     });
-    // reset();
-    // start();
-    // this.props.start();
-    // this.props.navigation.navigate('GameScreen');
   }
 
   render() {
     const moles = this.buildMoles();
     const { time } = this.state;
-    const { isEnded } = this.props;
+    const { isEnded, score, totalHits } = this.props;
     return (
       <View style={styles.wrapper}>
-        {this.state.show && <ScoreComponent  
+        {isEnded && (
+        <ScoreComponent
           openStartScreen={this.openStartScreen}
           restartGame={this.restartGame}
-        />}
+        />
+        )}
         <View style={{ height: 200 }}>
           <Image
             source={topPanel}
@@ -177,12 +152,12 @@ class GameScreen extends React.Component {
               style={styles.button}
             />
             <Text style={styles.time}>
-              {this.props.score}
+              {score}
             </Text>
           </View>
           <View>
             <Text style={[styles.time, { top: 20 }]}>
-            {this.props.totalHits}
+              {totalHits}
             </Text>
           </View>
           <View style={[styles.buttonWrapper, { right: 30 }]}>
@@ -190,9 +165,6 @@ class GameScreen extends React.Component {
               source={buttonImage}
               style={styles.button}
             />
-            {/* <Text style={styles.time}>
-              {time}
-            </Text> */}
             <Clock time={time} />
           </View>
         </View>
@@ -203,5 +175,14 @@ class GameScreen extends React.Component {
     );
   }
 }
+
+GameScreen.propTypes = {
+  isEnded: PropTypes.bool.isRequired,
+  score: PropTypes.number.isRequired,
+  totalHits: PropTypes.number.isRequired,
+  start: PropTypes.func.isRequired,
+  stop: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
+};
 
 export default GameScreen;

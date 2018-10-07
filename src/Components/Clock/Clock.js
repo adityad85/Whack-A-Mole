@@ -1,28 +1,25 @@
 import React from 'react';
-import { Text } from 'react-native'; 
+import { Text } from 'react-native';
+
+import PropTypes from 'prop-types';
 
 import styles from './clockStyles';
+import { getMinutes, getSeconds } from '../../Helpers/clockCalculation';
 
-class Clock extends React.Component {
-  getMinutes(time) {
-    const min = Math.floor(time/60);
-    return min;
-  }
 
-  getSeconds(time) {
-    const sec = Math.floor(time%60);
-    return sec;
-  }
+const Clock = (props) => {
+  const { time } = props;
+  const min = getMinutes(time);
+  const sec = getSeconds(time);
+  return (
+    <Text style={styles.time}>
+      {`${min}:${sec}`}
+    </Text>
+  );
+};
 
-  render() {
-    const min = this.getMinutes(this.props.time);
-    const sec = this.getSeconds(this.props.time);
-    return (
-        <Text style={styles.time}>
-        {`${min}:${sec}`}
-        </Text>
-    );
-  }
-}
+Clock.propTypes = {
+  time: PropTypes.number.isRequired,
+};
 
 export default Clock;

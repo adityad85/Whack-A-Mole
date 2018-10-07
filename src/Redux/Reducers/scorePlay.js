@@ -1,8 +1,6 @@
 import { gameConstants } from '../../Constants/gameConstants';
 
 const initialState = {
-  isStarted: false,
-  isRunning: false,
   isEnded: false,
   totalHits: 0,
   score: 0,

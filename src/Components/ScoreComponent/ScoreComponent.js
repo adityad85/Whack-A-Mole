@@ -12,35 +12,21 @@ import buttonImage from '../../assets/gameBtn.png';
 import styles from './scoreStyle';
 
 class ScoreComponent extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      show: false,
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isEnded != this.props.isEnded && nextProps.isEnded) {
-      this.setState({ showAlert: true });
-    }
-  }
-
   render() {
-    const { totalHits } = this.props;
-    const { show } = this.state;
-    const { openStartScreen, restartGame } = this.props;
-    
+    const {
+      openStartScreen, restartGame, score, totalHits,
+    } = this.props;
     return (
       <Modal
-        transparent={true}
+        transparent
         animationType="slide"
-        visible={true}
+        visible
         onRequestClose={() => ({})}
       >
         <View style={styles.scoreWrapper}>
           <View style={styles.scoreBox}>
             <Text style={styles.scoreFont}>
-              {`You Scored: ${this.props.score}`}
+              {`You Scored: ${score}`}
             </Text>
             <Text>
               {`Total Hits: ${totalHits}`}
@@ -82,6 +68,9 @@ class ScoreComponent extends React.Component {
 
 ScoreComponent.propTypes = {
   totalHits: PropTypes.number.isRequired,
+  openStartScreen: PropTypes.func.isRequired,
+  restartGame: PropTypes.func.isRequired,
+  score: PropTypes.number.isRequired,
 };
 
 export default ScoreComponent;

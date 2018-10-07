@@ -21,18 +21,21 @@ class Mole extends React.Component {
     const { speed, moleNumber, moveMoleAt } = this.props;
     this.moveMole(speed, moleNumber, moveMoleAt);
   }
-  
+
   componentWillReceiveProps() {
-    const { speed, moleNumber, moveMoleAt } = this.props;
+    const {
+      speed, moleNumber, moveMoleAt, isEnded, 
+    } = this.props;
+    const { molePos } = this.state;
     this.moveMole(speed, moleNumber, moveMoleAt);
-    if (this.props.isEnded) {
-      this.state.molePos.setValue(1);
-      this.state.molePos.stopAnimation();
+    if (isEnded) {
+      molePos.setValue(1);
+      molePos.stopAnimation();
     }
   }
 
   moveMole(speed, moleNumber, moveMoleAt) {
-    const { missMole } = this.props;
+    const { missMole, isEnded } = this.props;
     const { molePos } = this.state;
     if (moveMoleAt.indexOf(moleNumber) !== -1 && !this.isMoving) {
       this.isMoving = true;
@@ -51,7 +54,7 @@ class Mole extends React.Component {
         }),
       ]).start((isEvent) => {
         this.isMoving = false;
-        if (isEvent.finished && !this.props.isEnded) {
+        if (isEvent.finished && !isEnded) {
           missMole();
         }
       });
@@ -59,7 +62,8 @@ class Mole extends React.Component {
   }
 
   render() {
-    const { horizontalPos, verticalPos } = this.props;
+    const { horizontalPos, verticalPos, hitMole } = this.props;
+    const { molePos } = this.state;
     return (
       <Animated.View
         style={[
@@ -85,7 +89,7 @@ class Mole extends React.Component {
             {
               transform: [
                 {
-                  translateY: this.state.molePos.interpolate({
+                  translateY: molePos.interpolate({
                     inputRange: [0, 1],
                     outputRange: [0, 120],
                   }),
@@ -98,9 +102,8 @@ class Mole extends React.Component {
             style={styles.moleImageClickable}
             activeOpacity={0.5}
             onPress={() => {
-              this.state.molePos.setValue(1);
-              // call the total hit action
-              this.props.hitMole();
+              molePos.setValue(1);
+              hitMole();
             }}
           >
             <Animated.Image
@@ -117,6 +120,11 @@ class Mole extends React.Component {
 Mole.propTypes = {
   horizontalPos: PropTypes.number.isRequired,
   verticalPos: PropTypes.number.isRequired,
+  hitMole: PropTypes.func.isRequired,
+  isEnded: PropTypes.bool.isRequired,
+  missMole: PropTypes.func.isRequired,
+  speed: PropTypes.number.isRequired,
+  moleNumber: PropTypes.number.isRequired,
 };
 
 export default Mole;

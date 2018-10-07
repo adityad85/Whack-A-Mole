@@ -1,3 +1,3 @@
-import Start from './StartContainer';
+import StartScreen from './StartContainer';
 
-export default Start;
+export default StartScreen;
